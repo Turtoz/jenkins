@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        GITHUB_REPO = 'https://github.comTurtoz/jenkins'
+        GITHUB_REPO = 'https://github.com/Turtoz/jenkins'
         BRANCH = 'main'
     }
     
