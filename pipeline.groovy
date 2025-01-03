@@ -17,30 +17,36 @@ pipeline {
             }
         }
         
-        stage('Build') {
+        stage('1') {
             steps {
-                // Add your build commands here
                 sh '''
-                    echo "Building the application..."
-                    # Add your build commands (e.g., mvn clean install, npm install, etc.)
+                #!/bin/sh
+                /usr/local/bin/docker build -t Turtoz/jenkins
+                    
                 '''
             }
         }
         
-        stage('Test') {
+        stage('2') {
             steps {
                 sh '''
-                    echo "Running tests..."
-                    # Add your test commands
+                    #!/bin/bash
+                    PORT_TO_KILL=3000
+
+                    CONTAINER_ID=$(/usr/local/bin/docker ps -q --filter "expose=$PORT_TO_KILL")
+
+                    if [ -n "$CONTAINER_ID" ]; then
+                    /usr/local/bin/docker kill "$CONTAINER_ID"
+                    else
+                    echo "No container using port $PORT_TO_KILL found."
                 '''
             }
         }
         
-        stage('Deploy') {
+        stage('3') {
             steps {
                 sh '''
-                    echo "Deploying application..."
-                    # Add your deployment commands
+                    /usr/local/bin/docker run -p 3000:3000 -d Turtoz/jenkins
                 '''
             }
         }
